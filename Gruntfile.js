@@ -146,7 +146,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      tmp: ['.tmp', 'dist/.tmp']
     },
 
     // Add vendor prefixed styles
@@ -211,7 +212,8 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+          '<%= yeoman.dist %>/fonts/*',
+          '!<%= yeoman.dist %>/images/portfolio/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -348,7 +350,7 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'styles/fonts/{,*/}*.*'
+            'fonts/{,*/}*.*'
           ]
         }, {
           expand: true,
@@ -356,11 +358,16 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
         }, {
-          expand: true,
-          cwd: 'bower_components/bootstrap/dist',
-          src: 'fonts/*',
-          dest: '<%= yeoman.dist %>'
-        }]
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components',
+            src: [
+              'bootstrap/dist/fonts/*',
+              'fontawesome/fonts/*'
+            ],
+            flatten:true,
+            dest: '<%= yeoman.dist %>/fonts'
+          }
+        ]
       },
       styles: {
         expand: true,
@@ -438,7 +445,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'clean:tmp'
   ]);
 
   grunt.registerTask('default', [
